@@ -59,6 +59,18 @@ const configuration: webpack.Configuration = {
         use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
         exclude: /\.module\.s?(c|a)ss$/,
       },
+      {
+        test: /\.less$/,
+        use: [MiniCssExtractPlugin.loader, 'css-loader', {
+          loader:'less-loader',
+          options: {
+            lessOptions: {
+                javascriptEnabled: true,
+            }
+          }
+        }],
+        exclude: /\.module\.less$/,
+      },
       // Fonts
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/i,
