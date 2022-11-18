@@ -1,10 +1,136 @@
 @import '~antd/dist/antd.less';
 
+@bg: rgb(221, 249, 252);
+@border: #d9d9d9;
+
+* {
+  // 文字不能被选中
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 body {
   margin: 0;
 }
 
+body::-webkit-scrollbar {
+  width: 0;
+}
+
 #main {
-  background-color: #999;
+  background-color: @bg;
   height: 100vh;
+}
+
+.ant-input-group-addon {
+  padding: 0 !important;
+}
+
+.toolsBox {
+  display: flex;
+  height: 35px;
+  border-bottom: 2.33333px dashed @border;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+}
+
+.ant-input-group-addon {
+  cursor: pointer;
+}
+
+[data-theme='compact'] .site-collapse-custom-collapse .site-collapse-custom-panel,
+.site-collapse-custom-collapse .site-collapse-custom-panel {
+  margin-bottom: 10px;
+  overflow: hidden;
+  border-radius: 0 0 10px 10px;
+  background-color: @bg;
+}
+
+// // 折叠标题换行
+// .ant-collapse > .ant-collapse-item > .ant-collapse-header .ant-collapse-header-text {
+//   flex: auto;
+//   display: inline-block;
+//   width: 100%;
+//   word-break: break-all;
+//   white-space: normal;
+// }
+.ant-collapse>.ant-collapse-item>.ant-collapse-header {
+  align-items: center;
+  padding: 12px;
+  padding-bottom: 3px;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-around;
+  align-items: center;
+
+  .url {
+    width: 100%;
+    display: inline-block;
+    word-break: break-all;
+    white-space: normal;
+  }
+}
+
+.toolbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+
+  span {
+    font-size: 18.333333px;
+    color: #333;
+    cursor: pointer;
+  }
+}
+
+.ruleBox {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+  border: 1px outset @border;
+  margin-top: 20px;
+  padding: 5px;
+
+  .react-json-view {
+    width: 100%;
+    background-color: #fff !important;
+  }
+
+  .ruleItemTools {
+    align-self: flex-end;
+    margin-right: -12px;
+    margin-top: -20px;
+    background-color: @bg;
+    padding: 5px;
+    span {
+      margin-right: 10px;
+      font-size: 14px;
+    }
+    button {
+      height: 20px;
+      width: 40px;
+    }
+    .ant-switch-small.ant-switch-checked .ant-switch-handle {
+      top: calc(100% - 12px - 2px);
+    }
+  }
+
+}
+
+.footer {
+  text-align: center;
+  padding-top: 100vh;
+  padding-bottom: 10px;
+  background-color: @bg;
 }

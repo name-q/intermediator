@@ -9,12 +9,16 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import { app, BrowserWindow, shell, ipcMain } from 'electron';
+import { app, BrowserWindow, shell, ipcMain, dialog } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 
+//引入node原生fs模块
+const fs = require("fs")
+//引入node原生读写配置
+const ini = require('ini');
 class AppUpdater {
   constructor() {
     log.transports.file.level = 'info';
@@ -24,11 +28,70 @@ class AppUpdater {
 }
 
 let mainWindow: BrowserWindow | null = null;
+let ruleWindow: BrowserWindow;
 
 ipcMain.on('ipc-example', async (event, arg) => {
   const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
   console.log(msgTemplate(arg));
   event.reply('ipc-example', msgTemplate('pong'));
+});
+
+// 打开内部浏览器并应用规则
+ipcMain.on('intermediator', async (event, arg) => {
+  let [rule, url] = arg
+  console.log(rule, '<<<<>>>', url)
+  try {
+    const RESOURCES_PATH = app.isPackaged
+      ? path.join(process.resourcesPath, 'assets')
+      : path.join(__dirname, '../../assets');
+
+    const getAssetPath = (...paths: string[]): string => {
+      return path.join(RESOURCES_PATH, ...paths);
+    };
+    ruleWindow = new BrowserWindow({
+      show: false,
+      width: 333,
+      height: 666,
+      icon: getAssetPath('icon.png'),
+    });
+
+    ruleWindow.loadURL(url);
+    ruleWindow.once('ready-to-show', () => {
+      if (!ruleWindow) {
+        throw new Error('"ruleWindow" is not defined');
+      } else {
+        setTimeout(() => ruleWindow?.show(), 200)
+      }
+    });
+  } catch (error) {
+    event.reply('intermediator', error)
+  }
+  event.reply('intermediator', 'success')
+})
+
+// 获取规则缓存文件
+ipcMain.on('fs', async (event, arg) => {
+  const msgTemplate = (msg: string) => `fs: ${msg}`;
+  console.log(msgTemplate(arg));
+
+  let rulePath = path.join(__dirname, 'Rule.qy')
+  if (!fs.existsSync(rulePath)) {
+    // 写入初始缓存文件
+    fs.writeFileSync(rulePath, ini.stringify([]))
+  }
+
+  // 获取缓存文件
+  if (arg[0] === 'getCache') {
+    let rule = ini.parse(fs.readFileSync(rulePath).toString());
+    event.reply('fs', rule);
+  }
+
+  // 写入缓存文件
+  if (arg[0] === 'setCache') {
+    fs.writeFileSync(rulePath, ini.stringify(arg[1]))
+    event.reply('fs', 'rule save ok');
+  }
+
 });
 
 if (process.env.NODE_ENV === 'production') {
@@ -71,8 +134,8 @@ const createWindow = async () => {
 
   mainWindow = new BrowserWindow({
     show: false,
-    width: 1024,
-    height: 728,
+    width: 333,
+    height: 666,
     icon: getAssetPath('icon.png'),
     webPreferences: {
       preload: app.isPackaged
@@ -90,7 +153,7 @@ const createWindow = async () => {
     if (process.env.START_MINIMIZED) {
       mainWindow.minimize();
     } else {
-      mainWindow.show();
+      setTimeout(() => mainWindow?.show(), 200)
     }
   });
 
@@ -109,7 +172,7 @@ const createWindow = async () => {
 
   // Remove this if your app does not use auto updates
   // eslint-disable-next-line
-  new AppUpdater();
+  // new AppUpdater();
 };
 
 /**
@@ -122,6 +185,22 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
   }
+});
+
+// 阻止点击内部链接打开新窗口
+let contentTemp: any = null;
+const newWindowListener = (e: any) => {
+  e.preventDefault();
+  dialog.showMessageBox(ruleWindow,{
+    type:'error',
+    message:'Rules in effect',
+    detail:'Prevent opening new windows through links'
+  })
+  contentTemp?.removeListener("new-window", newWindowListener);
+};
+app.on("web-contents-created", (e, webContents) => {
+  webContents.addListener("new-window", newWindowListener);
+  contentTemp = webContents;
 });
 
 app
