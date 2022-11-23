@@ -327,14 +327,12 @@ const handleAddRule = (url: string, setActiveKey: Function, rule: ruleBox[], set
     const reg = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
     if (!reg.test(url)) return message.warning("URL must contain 'http://' or 'https://'");
     // 解析出标准网址
-    url = url.split('?')[0]
     const standardUrl = (urlx: string): any => {
       urlx = urlx.endsWith('/') ? urlx.substring(0, urlx.length - 1) : urlx
       return urlx.endsWith('/') ? standardUrl(urlx) : urlx
     }
-    url = standardUrl(url)
     // 获取标准网址的MD5
-    let urlMD5: string = getMD5(url)
+    let urlMD5: string = getMD5(standardUrl(url.split('?')[0]))
     let existence = false
     if (rule.length) rule.map(i => { if (i.indexes === urlMD5) { existence = true } })
     // 如果此规则存在则置顶并打开
@@ -353,6 +351,7 @@ const handleAddRule = (url: string, setActiveKey: Function, rule: ruleBox[], set
         onoff: true
       }
       rule = rule.filter(i => { if (i.indexes === urlMD5) { item = i; return false } else { return true } })
+      item.url = url
       rule.unshift(item)
     } else {
       // 如果此规则不存在则新增
@@ -490,24 +489,21 @@ const handleJSONEditorChange = (indexes: string, setRule: Function, rule: ruleBo
 
 // 打开内部浏览器并应用规则
 const handleIntermediator = (rule: ruleBox[], url: string) => {
-  let enteredurl = url
   if (!url) return message.info('URL not entered')
   // 是否为网址
   const reg = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
   if (!reg.test(url)) return message.warning("URL must contain 'http://' or 'https://'");
   // 解析出标准网址
-  url = url.split('?')[0]
   const standardUrl = (urlx: string): any => {
     urlx = urlx.endsWith('/') ? urlx.substring(0, urlx.length - 1) : urlx
     return urlx.endsWith('/') ? standardUrl(urlx) : urlx
   }
-  url = standardUrl(url)
   // 获取标准网址的MD5
-  let urlMD5: string = getMD5(url)
+  let urlMD5: string = getMD5(standardUrl(url.split('?')[0]))
   // 过滤出属于这个网址的规则
   rule = rule.filter(i => i.indexes === urlMD5)
 
-  window.electron.ipcRenderer.sendMessage("intermediator", [rule,enteredurl])
+  window.electron.ipcRenderer.sendMessage("intermediator", [rule,url])
   window.electron.ipcRenderer.once('intermediator', (arg: any) => {
     message.info(arg)
   });
