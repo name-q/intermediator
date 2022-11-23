@@ -380,7 +380,7 @@ const handleAddRule = (url: string, setActiveKey: Function, rule: ruleBox[], set
 const handleSave = (rule: ruleBox[]) => {
   window.electron.ipcRenderer.sendMessage("fs", ['setCache', rule])
   window.electron.ipcRenderer.once('fs', (arg) => {
-    console.log(arg)
+    // console.log(arg)
   });
 }
 
@@ -503,9 +503,9 @@ const handleIntermediator = (rule: ruleBox[], url: string) => {
   // 过滤出属于这个网址的规则
   rule = rule.filter(i => i.indexes === urlMD5)
 
-  window.electron.ipcRenderer.sendMessage("intermediator", [rule,url])
+  window.electron.ipcRenderer.sendMessage("intermediator", [rule, url])
   window.electron.ipcRenderer.once('intermediator', (arg: any) => {
-    message.info(arg)
+    message.success(arg)
   });
 }
 

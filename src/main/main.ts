@@ -10,8 +10,8 @@
  */
 import path from 'path';
 import { app, BrowserWindow, shell, ipcMain, dialog } from 'electron';
-import { autoUpdater } from 'electron-updater';
-import log from 'electron-log';
+// import { autoUpdater } from 'electron-updater';
+// import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 const cp = require('child_process')
@@ -28,20 +28,20 @@ app.commandLine.appendSwitch('allow-insecure-localhost', 'true');
 const fs = require("fs")
 //引入node原生读写配置
 const ini = require('ini');
-class AppUpdater {
-  constructor() {
-    log.transports.file.level = 'info';
-    autoUpdater.logger = log;
-    autoUpdater.checkForUpdatesAndNotify();
-  }
-}
+// class AppUpdater {
+//   constructor() {
+//     log.transports.file.level = 'info';
+//     autoUpdater.logger = log;
+//     autoUpdater.checkForUpdatesAndNotify();
+//   }
+// }
 
 let mainWindow: BrowserWindow | null = null;
 let ruleWindow: BrowserWindow;
 
 ipcMain.on('ipc-example', async (event, arg) => {
   const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
-  console.log(msgTemplate(arg));
+  // console.log(msgTemplate(arg));
   event.reply('ipc-example', msgTemplate('pong'));
 });
 
@@ -69,22 +69,23 @@ ipcMain.on('intermediator', async (event, arg) => {
       }
     });
 
-    // const spawn = cp.spawn(process.execPath, ['index.js'], {
-    //   maxBuffer: 1024 * 1024 * 999,
-    //   cwd: app.isPackaged
-    //     ? path.join(process.resourcesPath, 'mockttpx')
-    //     : path.join(__dirname, '../../mockttpx')
-    // })
-    // cps[cps.length] = spawn
+    const spawn = cp.spawn(process.execPath, ['index.js', JSON.stringify(rule)], {
+      maxBuffer: 1024 * 1024 * 999,
+      cwd: app.isPackaged
+        ? path.join(process.resourcesPath, 'mockttpx')
+        : path.join(__dirname, '../../mockttpx')
+    })
+    cps[cps.length] = spawn
 
-    // spawn.stdout.on('data', (data: any) => {
+    spawn.stdout.on('data', async (data: any) => {
       // get proxy prot & PEM
-      // let [prot, PEM] = (data+"").split('>>>')
-      console.log(JSON.stringify(rule),'<<<<XXXX')
+      let [prot, PEM] = (data + "").split('>>>')
+      console.log(JSON.stringify(rule), '<<<<XXXX')
       ruleWindow.webContents.session.setProxy({
-        // proxyRules:`127.0.0.1:${prot}`
-        proxyRules:`127.0.0.1:8000`
+        proxyRules: `127.0.0.1:${prot}`
+        // proxyRules:`127.0.0.1:8000`
       })
+      await installExtensions();
       ruleWindow.loadURL(url);
       ruleWindow.once('ready-to-show', () => {
         if (!ruleWindow) {
@@ -93,18 +94,18 @@ ipcMain.on('intermediator', async (event, arg) => {
           setTimeout(() => ruleWindow?.show(), 200)
         }
       });
-    // })
+    })
 
   } catch (error) {
     event.reply('intermediator', error)
   }
-  event.reply('intermediator', 'success')
+  event.reply('intermediator', 'wait ...')
 })
 
 // 获取规则缓存文件
 ipcMain.on('fs', async (event, arg) => {
   const msgTemplate = (msg: string) => `fs: ${msg}`;
-  console.log(msgTemplate(arg));
+  // console.log(msgTemplate(arg));
 
   let rulePath = path.join(__dirname, 'Rule.qy')
   if (!fs.existsSync(rulePath)) {
@@ -131,12 +132,12 @@ if (process.env.NODE_ENV === 'production') {
   sourceMapSupport.install();
 }
 
-const isDebug =
-  process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true';
+// const isDebug =
+//   process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true';
 
-if (isDebug) {
-  require('electron-debug')();
-}
+// if (isDebug) {
+require('electron-debug')();
+// }
 
 const installExtensions = async () => {
   const installer = require('electron-devtools-installer');
@@ -152,9 +153,9 @@ const installExtensions = async () => {
 };
 
 const createWindow = async () => {
-  if (isDebug) {
-    await installExtensions();
-  }
+  // if (isDebug) {
+  //   await installExtensions();
+  // }
 
   const RESOURCES_PATH = app.isPackaged
     ? path.join(process.resourcesPath, 'assets')
