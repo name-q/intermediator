@@ -14,6 +14,15 @@ import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
+const cp = require('child_process')
+
+// 终端命令
+let cps: Array<any> = []
+
+// Proxy ignore
+app.commandLine.appendSwitch('ignore-certificate-errors')
+app.commandLine.appendSwitch('allow-insecure-localhost', 'true');
+
 
 //引入node原生fs模块
 const fs = require("fs")
@@ -53,16 +62,39 @@ ipcMain.on('intermediator', async (event, arg) => {
       width: 333,
       height: 666,
       icon: getAssetPath('icon.png'),
-    });
-
-    ruleWindow.loadURL(url);
-    ruleWindow.once('ready-to-show', () => {
-      if (!ruleWindow) {
-        throw new Error('"ruleWindow" is not defined');
-      } else {
-        setTimeout(() => ruleWindow?.show(), 200)
+      webPreferences: {
+        nodeIntegration: true,
+        contextIsolation: false,
+        webSecurity: false
       }
     });
+
+    // const spawn = cp.spawn(process.execPath, ['index.js'], {
+    //   maxBuffer: 1024 * 1024 * 999,
+    //   cwd: app.isPackaged
+    //     ? path.join(process.resourcesPath, 'mockttpx')
+    //     : path.join(__dirname, '../../mockttpx')
+    // })
+    // cps[cps.length] = spawn
+
+    // spawn.stdout.on('data', (data: any) => {
+      // get proxy prot & PEM
+      // let [prot, PEM] = (data+"").split('>>>')
+      console.log(JSON.stringify(rule),'<<<<XXXX')
+      ruleWindow.webContents.session.setProxy({
+        // proxyRules:`127.0.0.1:${prot}`
+        proxyRules:`127.0.0.1:8000`
+      })
+      ruleWindow.loadURL(url);
+      ruleWindow.once('ready-to-show', () => {
+        if (!ruleWindow) {
+          throw new Error('"ruleWindow" is not defined');
+        } else {
+          setTimeout(() => ruleWindow?.show(), 200)
+        }
+      });
+    // })
+
   } catch (error) {
     event.reply('intermediator', error)
   }
@@ -180,6 +212,10 @@ const createWindow = async () => {
  */
 
 app.on('window-all-closed', () => {
+  // close all proxy
+  for (let i = 0; i < cps.length; i++) {
+    cps[i].kill()
+  }
   // Respect the OSX convention of having the application in memory even
   // after all windows have been closed
   if (process.platform !== 'darwin') {
@@ -191,10 +227,10 @@ app.on('window-all-closed', () => {
 let contentTemp: any = null;
 const newWindowListener = (e: any) => {
   e.preventDefault();
-  dialog.showMessageBox(ruleWindow,{
-    type:'error',
-    message:'Rules in effect',
-    detail:'Prevent opening new windows through links'
+  dialog.showMessageBox(ruleWindow, {
+    type: 'error',
+    message: 'Rules in effect',
+    detail: 'Prevent opening new windows through links'
   })
   contentTemp?.removeListener("new-window", newWindowListener);
 };

@@ -1,0 +1,19 @@
+{
+  "name": "mockttpx",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "license": "MIT",
+  "author": {
+    "name": "name-q",
+    "email": "1620206666@qq.com",
+    "url": "https://github.com/name-q/intermediator"
+  },
+  "dependencies": {
+    "mockttp": "^3.6.0"
+  }
+}
