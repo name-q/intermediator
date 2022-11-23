@@ -63,9 +63,9 @@ ipcMain.on('intermediator', async (event, arg) => {
       height: 666,
       icon: getAssetPath('icon.png'),
       webPreferences: {
-        nodeIntegration: true,
+        nodeIntegration: false,
         contextIsolation: false,
-        webSecurity: false
+        webSecurity: false,
       }
     });
 

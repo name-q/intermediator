@@ -514,12 +514,12 @@ http-proxy-agent@^4.0.1:
     agent-base "6"
     debug "4"
 
-http2-wrapper@2.0.5:
-  version "2.0.5"
-  resolved "https://registry.npmmirror.com/http2-wrapper/-/http2-wrapper-2.0.5.tgz#d4464509df69b6f82125b6cb337dbb80101f406c"
+http2-wrapper@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.npmmirror.com/http2-wrapper/-/http2-wrapper-2.2.0.tgz#b80ad199d216b7d3680195077bd7b9060fa9d7f3"
   dependencies:
     quick-lru "^5.1.1"
-    resolve-alpn "^1.1.1"
+    resolve-alpn "^1.2.0"
 
 https-proxy-agent@5, https-proxy-agent@^5.0.1:
   version "5.0.1"
@@ -624,8 +624,8 @@ mkdirp@^0.5.5:
     minimist "^1.2.6"
 
 mockttp@^3.6.0:
-  version "3.6.0"
-  resolved "https://registry.npmmirror.com/mockttp/-/mockttp-3.6.0.tgz#7ffb5b2e71c1483c3c01186840bb46ec797103c5"
+  version "3.6.1"
+  resolved "https://registry.npmmirror.com/mockttp/-/mockttp-3.6.1.tgz#768afe53515f58cf85b552dd94c40e9ed07390f3"
   dependencies:
     "@graphql-tools/schema" "^8.5.0"
     "@graphql-tools/utils" "^8.8.0"
@@ -649,7 +649,7 @@ mockttp@^3.6.0:
     graphql-subscriptions "^1.1.0"
     graphql-tag "^2.12.6"
     http-encoding "^1.5.1"
-    http2-wrapper "2.0.5"
+    http2-wrapper "^2.2.0"
     https-proxy-agent "^5.0.1"
     isomorphic-ws "^4.0.1"
     lodash "^4.16.4"
@@ -852,7 +852,7 @@ readable-stream@^2.0.0, readable-stream@^2.3.3:
     string_decoder "~1.1.1"
     util-deprecate "~1.0.1"
 
-resolve-alpn@^1.1.1:
+resolve-alpn@^1.2.0:
   version "1.2.1"
   resolved "https://registry.npmmirror.com/resolve-alpn/-/resolve-alpn-1.2.1.tgz#b7adbdac3546aaaec20b45e7d8265927072726f9"
 

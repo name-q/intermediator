@@ -490,6 +490,7 @@ const handleJSONEditorChange = (indexes: string, setRule: Function, rule: ruleBo
 
 // 打开内部浏览器并应用规则
 const handleIntermediator = (rule: ruleBox[], url: string) => {
+  let enteredurl = url
   if (!url) return message.info('URL not entered')
   // 是否为网址
   const reg = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
@@ -506,7 +507,7 @@ const handleIntermediator = (rule: ruleBox[], url: string) => {
   // 过滤出属于这个网址的规则
   rule = rule.filter(i => i.indexes === urlMD5)
 
-  window.electron.ipcRenderer.sendMessage("intermediator", [rule,url])
+  window.electron.ipcRenderer.sendMessage("intermediator", [rule,enteredurl])
   window.electron.ipcRenderer.once('intermediator', (arg: any) => {
     message.info(arg)
   });
