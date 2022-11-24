@@ -14,6 +14,12 @@ import { app, BrowserWindow, shell, ipcMain, dialog } from 'electron';
 // import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
+
+// yarn
+// install .base_profile && .zshrc environment variable -->node
+import fixPath from 'fix-path'
+fixPath()
+
 const cp = require('child_process')
 
 // 终端命令
@@ -48,7 +54,7 @@ ipcMain.on('ipc-example', async (event, arg) => {
 // 打开内部浏览器并应用规则
 ipcMain.on('intermediator', async (event, arg) => {
   let [rule, url] = arg
-  console.log(rule, '<<<<>>>', url)
+  // console.log(rule, '<<<<>>>', url)
   try {
     const RESOURCES_PATH = app.isPackaged
       ? path.join(process.resourcesPath, 'assets')
@@ -59,17 +65,19 @@ ipcMain.on('intermediator', async (event, arg) => {
     };
     ruleWindow = new BrowserWindow({
       show: false,
-      width: 333,
-      height: 666,
+      width: 1024,
+      height: 728,
       icon: getAssetPath('icon.png'),
+      skipTaskbar: true,
       webPreferences: {
         nodeIntegration: false,
         contextIsolation: false,
         webSecurity: false,
+        devTools: true,
       }
     });
 
-    const spawn = cp.spawn(process.execPath, ['index.js', JSON.stringify(rule)], {
+    const spawn = cp.spawn('node', ['index.js', JSON.stringify(rule)], {
       maxBuffer: 1024 * 1024 * 999,
       cwd: app.isPackaged
         ? path.join(process.resourcesPath, 'mockttpx')
@@ -80,34 +88,49 @@ ipcMain.on('intermediator', async (event, arg) => {
     spawn.stdout.on('data', async (data: any) => {
       // get proxy prot & PEM
       let [prot, PEM] = (data + "").split('>>>')
-      console.log(JSON.stringify(rule), '<<<<XXXX')
+      // console.log(JSON.stringify(rule), '<<<<XXXX')
       ruleWindow.webContents.session.setProxy({
         proxyRules: `127.0.0.1:${prot}`
         // proxyRules:`127.0.0.1:8000`
       })
-      await installExtensions();
+      ruleWindow.webContents.openDevTools({ mode: 'undocked', activate: true })
       ruleWindow.loadURL(url);
       ruleWindow.once('ready-to-show', () => {
         if (!ruleWindow) {
           throw new Error('"ruleWindow" is not defined');
         } else {
-          setTimeout(() => ruleWindow?.show(), 200)
+          setTimeout(() => {
+            // hide 
+            ruleWindow.setSkipTaskbar(true)
+            app.dock.hide()
+            app.dock.setBadge('')
+            ruleWindow?.show()
+          }, 200)
         }
       });
     })
 
-  } catch (error) {
+  } catch (error: any) {
+    dialog.showMessageBox(ruleWindow, {
+      type: 'error',
+      message: error,
+      detail: 'ERROR'
+    })
     event.reply('intermediator', error)
   }
   event.reply('intermediator', 'wait ...')
+  return
 })
 
 // 获取规则缓存文件
 ipcMain.on('fs', async (event, arg) => {
-  const msgTemplate = (msg: string) => `fs: ${msg}`;
+  // const msgTemplate = (msg: string) => `fs: ${msg}`;
   // console.log(msgTemplate(arg));
 
-  let rulePath = path.join(__dirname, 'Rule.qy')
+  let rulePath = app.isPackaged
+    ? path.join(process.resourcesPath, 'Rule.qy')
+    : path.join(__dirname, '../../Rule.qy');
+
   if (!fs.existsSync(rulePath)) {
     // 写入初始缓存文件
     fs.writeFileSync(rulePath, ini.stringify([]))
@@ -136,21 +159,21 @@ if (process.env.NODE_ENV === 'production') {
 //   process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true';
 
 // if (isDebug) {
-require('electron-debug')();
+// require('electron-debug')();
 // }
 
-const installExtensions = async () => {
-  const installer = require('electron-devtools-installer');
-  const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
-  const extensions = ['REACT_DEVELOPER_TOOLS'];
+// const installExtensions = async () => {
+//   const installer = require('electron-devtools-installer');
+//   const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
+//   const extensions = ['REACT_DEVELOPER_TOOLS'];
 
-  return installer
-    .default(
-      extensions.map((name) => installer[name]),
-      forceDownload
-    )
-    .catch(console.log);
-};
+//   return installer
+//     .default(
+//       extensions.map((name) => installer[name]),
+//       forceDownload
+//     )
+//     .catch(console.log);
+// };
 
 const createWindow = async () => {
   // if (isDebug) {
@@ -171,6 +194,7 @@ const createWindow = async () => {
     height: 666,
     icon: getAssetPath('icon.png'),
     webPreferences: {
+      devTools: false,
       preload: app.isPackaged
         ? path.join(__dirname, 'preload.js')
         : path.join(__dirname, '../../.erb/dll/preload.js'),

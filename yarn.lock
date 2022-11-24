@@ -3547,6 +3547,10 @@ default-gateway@^6.0.3:
   dependencies:
     execa "^5.0.0"
 
+default-shell@^2.0.0:
+  version "2.2.0"
+  resolved "https://registry.npmmirror.com/default-shell/-/default-shell-2.2.0.tgz#31481c19747bfe59319b486591643eaf115a1864"
+
 defaults@^1.0.3:
   version "1.0.4"
   resolved "https://registry.npmmirror.com/defaults/-/defaults-1.0.4.tgz#b0b02062c1e2aa62ff5d9528f0f98baa90978d7a"
@@ -4431,7 +4435,7 @@ events@^3.2.0:
   version "3.3.0"
   resolved "https://registry.npmmirror.com/events/-/events-3.3.0.tgz#31a95ad0a924e2d2c419a813aeb2c4e878ea7400"
 
-execa@^5.0.0:
+execa@^5.0.0, execa@^5.1.1:
   version "5.1.1"
   resolved "https://registry.npmmirror.com/execa/-/execa-5.1.1.tgz#f80ad9cbf4298f7bd1d4c9555c21e93741c411dd"
   dependencies:
@@ -4663,6 +4667,12 @@ find-up@^5.0.0:
   dependencies:
     locate-path "^6.0.0"
     path-exists "^4.0.0"
+
+fix-path@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.npmmirror.com/fix-path/-/fix-path-4.0.0.tgz#bc1d14f038edb734ac46944a45454106952ca429"
+  dependencies:
+    shell-path "^3.0.0"
 
 flat-cache@^3.0.4:
   version "3.0.4"
@@ -8355,6 +8365,20 @@ shebang-command@^2.0.0:
 shebang-regex@^3.0.0:
   version "3.0.0"
   resolved "https://registry.npmmirror.com/shebang-regex/-/shebang-regex-3.0.0.tgz#ae16f1644d873ecad843b0307b143362d4c42172"
+
+shell-env@^4.0.0:
+  version "4.0.1"
+  resolved "https://registry.npmmirror.com/shell-env/-/shell-env-4.0.1.tgz#883302d9426095d398a39b102a851adb306b8cb8"
+  dependencies:
+    default-shell "^2.0.0"
+    execa "^5.1.1"
+    strip-ansi "^7.0.1"
+
+shell-path@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.npmmirror.com/shell-path/-/shell-path-3.0.0.tgz#5c95bc68aade43c06082a0655cb5c97586e4feb0"
+  dependencies:
+    shell-env "^4.0.0"
 
 shell-quote@^1.7.3:
   version "1.7.4"
