@@ -1,5 +1,6 @@
 {
-  "description": "",
+  "description": "Small and easy to use tool to change the API RESponse value, which only changes itself without polluting the system agent",
+  "version": "1.0.0",
   "keywords": [
     "electron",
     "boilerplate",
@@ -194,8 +195,8 @@
     "webpack-merge": "^5.8.0"
   },
   "build": {
-    "productName": "ElectronReact",
-    "appId": "org.erb.ElectronReact",
+    "productName": "Intermediator",
+    "appId": "org.erb.Intermediator",
     "asar": true,
     "asarUnpack": "**\\*.{node,dll}",
     "files": [
@@ -233,9 +234,20 @@
       ]
     },
     "win": {
+      "requestedExecutionLevel": "requireAdministrator",
       "target": [
-        "nsis"
+        "nsis",
+        "msi"
       ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "installerHeaderIcon": "./assets/icon.ico",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Intermediator"
     },
     "linux": {
       "target": [

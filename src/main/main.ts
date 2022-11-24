@@ -9,7 +9,7 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import { app, BrowserWindow, shell, ipcMain, dialog } from 'electron';
+import { app, BrowserWindow, shell, ipcMain, dialog, screen } from 'electron';
 // import { autoUpdater } from 'electron-updater';
 // import log from 'electron-log';
 import MenuBuilder from './menu';
@@ -63,11 +63,15 @@ ipcMain.on('intermediator', async (event, arg) => {
     const getAssetPath = (...paths: string[]): string => {
       return path.join(RESOURCES_PATH, ...paths);
     };
+
+    let {width,height} = screen.getPrimaryDisplay().workAreaSize
+    width = width * .8
+    height = height * .8
     ruleWindow = new BrowserWindow({
       show: false,
-      width: 1024,
-      height: 728,
-      icon: getAssetPath('icon.png'),
+      width, 
+      height,
+      icon: getAssetPath('iconx.png'),
       skipTaskbar: true,
       webPreferences: {
         nodeIntegration: false,
@@ -102,7 +106,6 @@ ipcMain.on('intermediator', async (event, arg) => {
           setTimeout(() => {
             // hide 
             ruleWindow.setSkipTaskbar(true)
-            app.dock.hide()
             app.dock.setBadge('')
             ruleWindow?.show()
           }, 200)
