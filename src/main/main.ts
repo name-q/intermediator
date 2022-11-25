@@ -106,7 +106,6 @@ ipcMain.on('intermediator', async (event, arg) => {
           setTimeout(() => {
             // hide 
             ruleWindow.setSkipTaskbar(true)
-            app.dock.setBadge('')
             ruleWindow?.show()
           }, 200)
         }

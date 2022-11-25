@@ -41,7 +41,8 @@
     "build:renderer": "cross-env NODE_ENV=production TS_NODE_TRANSPILE_ONLY=true webpack --config ./.erb/configs/webpack.config.renderer.prod.ts",
     "postinstall": "npx ts-node .erb/scripts/check-native-dep.js && electron-builder install-app-deps && cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack --config ./.erb/configs/webpack.config.renderer.dev.dll.ts",
     "lint": "cross-env NODE_ENV=development eslint . --ext .js,.jsx,.ts,.tsx",
-    "package": "npx ts-node ./.erb/scripts/clean.js dist && yarn build && electron-builder build --publish never",
+    "package:mac": "npx ts-node ./.erb/scripts/clean.js dist && yarn build && electron-builder build --publish never",
+    "package:win": "npx ts-node ./.erb/scripts/clean.js dist && yarn build && electron-builder build --win --publish never",
     "prepare": "husky install",
     "rebuild": "electron-rebuild --parallel --types prod,dev,optional --module-dir release/app",
     "start": "npx ts-node ./.erb/scripts/check-port-in-use.js && yarn start:renderer",
@@ -236,8 +237,7 @@
     "win": {
       "requestedExecutionLevel": "requireAdministrator",
       "target": [
-        "nsis",
-        "msi"
+        {"target":"nsis","arch":"x64"}
       ]
     },
     "nsis": {
