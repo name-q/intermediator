@@ -64,15 +64,15 @@ ipcMain.on('intermediator', async (event, arg) => {
       return path.join(RESOURCES_PATH, ...paths);
     };
 
-    let {width,height} = screen.getPrimaryDisplay().workAreaSize
+    let { width, height } = screen.getPrimaryDisplay().workAreaSize
     width = width * .8
     height = height * .8
     ruleWindow = new BrowserWindow({
-      width, 
+      width,
       height,
       icon: getAssetPath('iconx.png'),
       skipTaskbar: true,
-      title:`intermediator-->${url}`,
+      title: `intermediator-->${url}`,
       webPreferences: {
         nodeIntegration: false,
         contextIsolation: false,
@@ -80,7 +80,7 @@ ipcMain.on('intermediator', async (event, arg) => {
         devTools: true,
       }
     });
-    
+
     const spawn = cp.spawn('node', ['index.js', encodeURIComponent(JSON.stringify(rule))], {
       maxBuffer: 1024 * 1024 * 999,
       cwd: app.isPackaged
@@ -194,6 +194,7 @@ const createWindow = async () => {
     width: 333,
     height: 666,
     icon: getAssetPath('icon.png'),
+    alwaysOnTop: true,
     webPreferences: {
       devTools: false,
       preload: app.isPackaged
