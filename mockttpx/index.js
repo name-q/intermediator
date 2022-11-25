@@ -16,6 +16,8 @@
             rule.map(async item => {
                 let { onoff, type, method, change, value } = item
                 if (onoff && change) {
+                    change = change.split('?')[0]
+                    change = change.startsWith('/') ? change : `/${change}`
                     if (['api'].includes(type)) {
                         if (['POST', 'ALL'].includes(method)) {
                             await server
@@ -143,7 +145,7 @@
                                         png: 'image/png',
                                         pdf: 'application/pdf'
                                     }
-                                    
+
                                     if (enumContentType[suffix]) headers = {
                                         "Content-Type": ['image', 'font'].includes(enumContentType[suffix])
                                             ? enumContentType[suffix] : `${enumContentType[suffix]}; charset=UTF-8`
