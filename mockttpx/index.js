@@ -143,7 +143,11 @@
                                         png: 'image/png',
                                         pdf: 'application/pdf'
                                     }
-                                    if (enumContentType[suffix]) headers = { "Content-Type": enumContentType[suffix] + ';charset=UTF-8' }
+                                    
+                                    if (enumContentType[suffix]) headers = {
+                                        "Content-Type": ['image', 'font'].includes(enumContentType[suffix])
+                                            ? enumContentType[suffix] : `${enumContentType[suffix]}; charset=UTF-8`
+                                    }
 
                                     if (headers) return {
                                         statusCode: 200,
