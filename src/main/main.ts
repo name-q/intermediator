@@ -68,11 +68,11 @@ ipcMain.on('intermediator', async (event, arg) => {
     width = width * .8
     height = height * .8
     ruleWindow = new BrowserWindow({
-      show: false,
       width, 
       height,
       icon: getAssetPath('iconx.png'),
       skipTaskbar: true,
+      title:`intermediator-->${url}`,
       webPreferences: {
         nodeIntegration: false,
         contextIsolation: false,
@@ -80,8 +80,8 @@ ipcMain.on('intermediator', async (event, arg) => {
         devTools: true,
       }
     });
-
-    const spawn = cp.spawn('node', ['index.js', JSON.stringify(rule)], {
+    
+    const spawn = cp.spawn('node', ['index.js', encodeURIComponent(JSON.stringify(rule))], {
       maxBuffer: 1024 * 1024 * 999,
       cwd: app.isPackaged
         ? path.join(process.resourcesPath, 'mockttpx')
@@ -106,7 +106,6 @@ ipcMain.on('intermediator', async (event, arg) => {
           setTimeout(() => {
             // hide 
             ruleWindow.setSkipTaskbar(true)
-            ruleWindow?.show()
           }, 200)
         }
       });

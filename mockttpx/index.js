@@ -3,7 +3,7 @@
     const { promises: Fs } = require('fs')
 
     const mockttp = require('mockttp');
-    let rulex = JSON.parse(process.argv[2])[0]
+    let rulex = JSON.parse(decodeURIComponent(process.argv[2]))[0]
 
     // create https proxy
     const https = await mockttp.generateCACertificate();
@@ -21,37 +21,37 @@
                             await server
                                 .forPost(change)
                                 .always()
-                                .thenReply(200, value)
+                                .thenReply(200, value, { "content-type": "application/json; charset=UTF-8" })
                         }
                         if (['GET', 'ALL'].includes(method)) {
                             await server
                                 .forGet(change)
                                 .always()
-                                .thenReply(200, value)
+                                .thenReply(200, value, { "content-type": "application/json; charset=UTF-8" })
                         }
                         if (['PUT', 'ALL'].includes(method)) {
                             await server
                                 .forPut(change)
                                 .always()
-                                .thenReply(200, value)
+                                .thenReply(200, value, { "content-type": "application/json; charset=UTF-8" })
                         }
                         if (['DELETE', 'ALL'].includes(method)) {
                             await server
                                 .forDelete(change)
                                 .always()
-                                .thenReply(200, value)
+                                .thenReply(200, value, { "content-type": "application/json; charset=UTF-8" })
                         }
                         if (['HEAD', 'ALL'].includes(method)) {
                             await server
                                 .forHead(change)
                                 .always()
-                                .thenReply(200, value)
+                                .thenReply(200, value, { "content-type": "application/json; charset=UTF-8" })
                         }
                         if (['OPTIONS', 'ALL'].includes(method)) {
                             await server
                                 .forOptions(change)
                                 .always()
-                                .thenReply(200, value)
+                                .thenReply(200, value, { "content-type": "application/json; charset=UTF-8" })
                         }
                         // 这种方式不可取 会将页面丢失 ::根目录/也是GET::
                         // ALL定义为上述所有请求的规则载入与type === 'regular'一致
@@ -59,7 +59,7 @@
                         //     await server
                         //         .forAnyRequest(change)
                         //         .always()
-                        //         .thenReply(200, value)
+                        //         .thenReply(200, value, { "content-type": "application/json; charset=UTF-8" })
                         // }
                     }
                     if (['regular'].includes(type)) {
@@ -72,27 +72,27 @@
                         await server
                             .forPost(reg)
                             .always()
-                            .thenReply(200, value)
+                            .thenReply(200, value, { "content-type": "application/json; charset=UTF-8" })
                         await server
                             .forGet(reg)
                             .always()
-                            .thenReply(200, value)
+                            .thenReply(200, value, { "content-type": "application/json; charset=UTF-8" })
                         await server
                             .forPut(reg)
                             .always()
-                            .thenReply(200, value)
+                            .thenReply(200, value, { "content-type": "application/json; charset=UTF-8" })
                         await server
                             .forDelete(reg)
                             .always()
-                            .thenReply(200, value)
+                            .thenReply(200, value, { "content-type": "application/json; charset=UTF-8" })
                         await server
                             .forHead(reg)
                             .always()
-                            .thenReply(200, value)
+                            .thenReply(200, value, { "content-type": "application/json; charset=UTF-8" })
                         await server
                             .forOptions(reg)
                             .always()
-                            .thenReply(200, value)
+                            .thenReply(200, value, { "content-type": "application/json; charset=UTF-8" })
                     }
                     if (['path'].includes(type)) {
                         let valuex = false
@@ -143,7 +143,7 @@
                                         png: 'image/png',
                                         pdf: 'application/pdf'
                                     }
-                                    if (enumContentType[suffix]) headers = { "Content-Type": enumContentType[suffix] }
+                                    if (enumContentType[suffix]) headers = { "Content-Type": enumContentType[suffix] + ';charset=UTF-8' }
 
                                     if (headers) return {
                                         statusCode: 200,
