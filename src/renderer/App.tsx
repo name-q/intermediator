@@ -58,7 +58,12 @@ const Main = memo(() => {
             padding: 5,
           }
         }
-        onClick={() => handleIntermediator(rule, url)}
+        onClick={
+          useCallback(() => {
+            handleAddRule(url, setActiveKey, rule, setRule)
+            handleIntermediator(rule, url)
+          }, [url])
+        }
         rotate={33}
       />
     </>
