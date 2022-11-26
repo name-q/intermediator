@@ -2,7 +2,7 @@
 
 Intermediator是一个轻量开源工具，用于在存在NODE环境的 Windows(x64)、 Mac 系统上修改HTTP(S)返回值。
 
-您可以使用它修改HTTP(S)响应值、重定向请求到本地文件，支持使用正则的方式批量修改请求返回值。
+您可以使用它修改HTTP(S)响应值、重定向静态文件请求到本地文件目录，支持使用正则的方式批量修改请求返回值。
 
 ---
 
@@ -56,8 +56,6 @@ Intermediator是一个轻量开源工具，用于在存在NODE环境的 Windows(
 
 ## 下载链接
 
-    [Release Intermediator · name-q/intermediator · GitHub](https://github.com/name-q/intermediator/releases/tag/InternalTest)
-
     mac：
 
         Intel芯片下载Intermediator-1.0.0.dmg
@@ -68,4 +66,42 @@ Intermediator是一个轻量开源工具，用于在存在NODE环境的 Windows(
 
         下载Intermediator.Setup.1.0.0.exe 仅适用64位系统
 
+    [Release Intermediator · name-q/intermediator · GitHub](https://github.com/name-q/intermediator/releases/tag/InternalTest)
 
+
+
+## 常见问题
+
+    Q：和PostMan有什么区别
+
+    A：PostMan主要用于后端调试接口,Intermediator用于前端调试页面
+
+
+
+    Q：常见的使用场景
+
+    A：  1.部分环境有数据但不允许直接连调，可复制值到你的环境上
+
+            2.修改某个值让前端工程师看到修改后的效果
+
+            3.将多个静态文件请求映射到本地热更新编译后的目录
+
+
+
+    Q：为何不支持PC全局请求获取
+
+    A：    全局请求获取必须要修改您的网络代理&信任我们生成的CA证书
+
+              当然我们可以注入某个软件例如Chrome支持CA和Proxy的注入。
+
+              市场上的抓包改包工具很丰富例如charles\fiddler\wireshark
+
+              有偿且有学习成本，做抓包工具可以实现但并不符合我们明确
+
+              且轻量的初衷和方向。我们仅代理了自带的浏览器不存在污染。
+
+
+
+    Q：logo是什么意思
+
+    A：你干嘛啊～～哎呦～
