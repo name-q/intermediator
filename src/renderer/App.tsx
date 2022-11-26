@@ -32,6 +32,7 @@ const Main = memo(() => {
   const [activeKey, setActiveKey]: [string[], Function] = useState([])
   const [rule, setRule] = useState([])
   const [status, setStatus] = useState(true)
+  const [easterEgg, setEasterEgg] = useState(0)
 
   const inputEl: any = useRef(null);
   useEffect(() => {
@@ -277,7 +278,16 @@ const Main = memo(() => {
           }
         </Collapse>
       )}
-      <div className='footer'>:)</div>
+
+      <div
+        className='footer'
+        onClick={() => setEasterEgg(easterEgg + 1)}
+      >
+        {easterEgg ? ': >' : ':)'}
+      </div>
+      {easterEgg >= 3 && (
+        <iframe src="https://player.bilibili.com/player.html?aid=219590518&bvid=BV178411Y7QB&cid=874100617&page=1" scrolling="no" style={{ width: '100%', height: 200, border: 0, marginBottom: -6 }} />
+      )}
     </div>
   );
 })

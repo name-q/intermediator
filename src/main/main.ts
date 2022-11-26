@@ -26,9 +26,9 @@ const cp = require('child_process')
 let cps: Array<any> = []
 
 // Proxy ignore
-app.commandLine.appendSwitch('ignore-certificate-errors')
+app.commandLine.appendSwitch('ignore-certificate-errors');
+app.commandLine.appendSwitch("disable-site-isolation-trials");
 app.commandLine.appendSwitch('allow-insecure-localhost', 'true');
-
 
 //引入node原生fs模块
 const fs = require("fs")
