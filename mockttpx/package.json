@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "pkg": "pkg package.json --out-path=dist/"
   },
   "keywords": [],
   "license": "MIT",
@@ -15,5 +16,19 @@
   },
   "dependencies": {
     "mockttp": "^3.6.0"
+  },
+  "pkg": {
+    "scripts": [],
+    "targets": [
+      "node14-macos-x64"
+    ],
+    "assets": [
+      "node_modules/zstd-codec/lib/zstd-codec-binding.js",
+      "node_modules/vm2/lib/setup-sandbox.js"
+    ]
+  },
+  "bin": "./index.js",
+  "devDependencies": {
+    "pkg": "^5.8.0"
   }
 }
