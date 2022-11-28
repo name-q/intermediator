@@ -261,7 +261,7 @@
     },
     "extraResources": [
       "./assets/**",
-      "./mockttpx/**"
+      "./mockttpx/dist/**"
     ],
     "publish": {
       "provider": "github",

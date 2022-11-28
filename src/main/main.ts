@@ -81,11 +81,11 @@ ipcMain.on('intermediator', async (event, arg) => {
       }
     });
 
-    const spawn = cp.spawn('node', ['index.js', encodeURIComponent(JSON.stringify(rule))], {
+    const spawn = cp.spawn('./mockttpx', [encodeURIComponent(JSON.stringify(rule))], {
       maxBuffer: 1024 * 1024 * 999,
       cwd: app.isPackaged
-        ? path.join(process.resourcesPath, 'mockttpx')
-        : path.join(__dirname, '../../mockttpx')
+        ? path.join(process.resourcesPath, 'mockttpx/dist')
+        : path.join(__dirname, '../../mockttpx/dist')
     })
     cps[cps.length] = spawn
 
