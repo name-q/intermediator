@@ -81,7 +81,7 @@ ipcMain.on('intermediator', async (event, arg) => {
       }
     });
 
-    const spawn = cp.spawn('./mockttpx', [encodeURIComponent(JSON.stringify(rule))], {
+    const spawn = cp.spawn('./mockttpx.exe', [encodeURIComponent(JSON.stringify(rule))], {
       maxBuffer: 1024 * 1024 * 999,
       cwd: app.isPackaged
         ? path.join(process.resourcesPath, 'mockttpx/dist')
