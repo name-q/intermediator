@@ -1,6 +1,6 @@
 # Intermediator
 
-Intermediator是一个轻量开源工具，用于 Windows(x64)、 Mac 系统上修改接口返回值。
+Intermediator是一个轻量开源工具，可用于 Windows(x64)、 Mac 系统上修改接口返回值。
 
 您可以使用它修改HTTP(S)响应值、重定向静态文件请求到本地文件目录，支持使用正则的方式批量修改请求返回值。
 
