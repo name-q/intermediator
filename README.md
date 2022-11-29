@@ -1,95 +1,113 @@
 # Intermediator
 
-Intermediator是一个轻量开源工具，用于 Windows(x64)、 Mac 系统上修改接口返回值。
+EN/[简体]([./README_CN.md)
 
-您可以使用它修改HTTP(S)响应值、重定向静态文件请求到本地文件目录，支持使用正则的方式批量修改请求返回值。
+Intermediator is a lightweight open source tool for modifying interface return values on Windows (x64) and Mac systems.
+
+You can use it to modify HTTP (S) response values, redirect static file
+requests to the local file directory, and support batch modification of request
+return values in a regular manner.
 
 ---
 
-## 使用方式
+## How to use
 
-    1. 输入包含http/https的网址
+1. Enter the URL containing http/https
 
 <img title="" src="./readme/2022-11-26-13-10-19-image.png" alt="" width="215">
 
-    2. 点击添加规则
+2. Click Add Rule
 
-    3. 编辑你的规则
+3. Edit your rules
 
-```便捷的编辑你的规则
-     当前支持指定API、批量正则和路径的方式匹配要改变的api
-     在Changed value中输入改变后的值/本地路径
-     eg:选择path模式 
-        输入被监听的api路径 支持模糊匹配
-        Changed value中输入本地路径
-        值得注意的是path模式匹配到路径而不是文件
-     eg:选择api模式
-        输入被监听的api路径完整值 暂不匹配api中的GET参数 ?x= &y=
-        Changed value中输入请求响应结果的右击复制值并修改成你想要的值
+```Easily edit your rules
+     Currently, API, batch regular and path matching methods are 
+     supported Enter the changed value/local path in the Changed value
+
+     Eg: Select the path mode
+
+     The input monitored api path supports fuzzy matching
+     Enter the local path in the Changed value It is worth noting that 
+     the path pattern matches the path, not the file
+
+     Eg: Select the api mode
+
+     The full value of the input monitored api path does not match the 
+     GET parameter in the api temporarily? x= &y= In Changed value, 
+     enter the request response result, right click the copy value 
+     and modify it to the desired value
 ```
 
-    4. 点击浏览器图标即可看到效果
+    4. Click the browser icon to see the effect
 
-## Intermediator工作流程
 
-| 生命周期              | Intermediator执行                                     | 读写磁盘 | 新开进程 | 监听端口 |
-| ----------------- | --------------------------------------------------- | ---- | ---- | ---- |
-| 打开                | 读取软件目录中的规则文件Rule.qy                                 | √    | x    | x    |
-| 初始化               | 应用保存按钮储存的规则并默认选择第一个规则                               | x    | x    | x    |
-| 点击新增规则            | 仅修改state值                                           | x    | x    | x    |
-| 点击保存规则            | 写当前规则到Rule.qy                                       | √    | x    | x    |
-| 点击打开浏览器           | 启动本地node进程并仅应用当前网址的规则构建代理服务，打开内置浏览器注入代理规则打开devTools | √    | √    | √    |
-| 改变规则后再次点击打开浏览器    | 启动本地node进程监听新的端口构建当前网址新规则代理服务器，打开内置浏览器新窗口注入代理       | √    | √    | √    |
-| 改变网址和规则后再次点击打开浏览器 | 同上                                                  | √    | √    | √    |
-| 关闭某个浏览器窗口         | 不执行任何操作                                             | x    | x    | x    |
-| 关闭所有窗口            | 结束进程并关闭所有代理服务                                       | x    | x    | x    |
+
+## Intermediator Workflow
+
+| life cycle                                                       | Intermediator implement                                                                                                                                                      | Read Write Disk | New process | Listening port |
+| ---------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------- | ----------- | -------------- |
+| open                                                             | Read the rule file Rule.qy in the software directory                                                                                                                         | √               | x           | x              |
+| initialization                                                   | Apply the rules saved by the Save button and select the first rule by default                                                                                                | x               | x           | x              |
+| Click Add Rule                                                   | Modify state value only                                                                                                                                                      | x               | x           | x              |
+| Click Save Rule                                                  | Write the current rule to Rule.qy                                                                                                                                            | √               | x           | x              |
+| Click to open the browser                                        | Start the local node process and only apply the rules of the current URL to build the proxy service. Open the built-in browser to inject proxy rules and open devTools       | √               | √           | √              |
+| Click again to open the browser after changing the rules         | Start the local node process to listen to the new port, build a new rule proxy server for the current URL, and open a new window of the built-in browser to inject the proxy | √               | √           | √              |
+| Click again to open the browser after changing the URL and rules | ditto                                                                                                                                                                        | √               | √           | √              |
+| Close a browser window                                           | Do nothing                                                                                                                                                                   | x               | x           | x              |
+| Close all windows                                                | End the process and shut down all agent services                                                                                                                             | x               | x           | x              |
 
 ## 
 
-## 发送您的反馈
+## Send your feedback
 
-    您可以直接在ISSUES中反馈
+    You can give feedback directly in ISSUES
 
     [Issues · name-q/intermediator · GitHub](https://github.com/name-q/intermediator/issues)
 
-## 下载链接
 
-    mac：
 
-        Intel芯片下载Intermediator-1.0.0.dmg
+## Download link
 
-        M1或M2芯片下载Intermediator-1.0.0-arm64.dmg
+    mac:
 
-    win：
+        Intel chip Download Intermediator-1.0.0.dmg 
 
-        下载Intermediator.Setup.1.0.0.exe 仅适用64位系统
+        M1 or M2 chip Download Intermediator-1.0.0-arm64.dmg
+
+    win: 
+
+        Installation package for 64 bit systems only Download Intermediator.Setup.1.0.0.exe
 
     [Release Intermediator · name-q/intermediator · GitHub](https://github.com/name-q/intermediator/releases/tag/PublicTest)
 
-## 常见问题
 
-    Q：和PostMan有什么区别
 
-    A：PostMan主要用于后端调试接口,Intermediator用于前端调试页面
+## common problem
 
-    Q：常见的使用场景
 
-    A：  1.部分环境有数据但不允许直接连调，可复制值到你的环境上
 
-            2.修改某个值让前端工程师看到修改后的效果
+Q：What's the difference with PostMan
 
-            3.将多个静态文件请求映射到本地热更新编译后的目录
+A：PostMan is mainly used for back-end debugging interface, and Mediator is used for front-end debugging page
 
-    Q：为何不支持PC全局请求获取
+Q：Common usage scenarios
 
-    A：    全局请求获取必须要修改您的网络代理&信任我们生成的CA证书
+A： 1. Some environments have data but cannot be directly connected. You can copy the value to your environment
 
-              当使用VPN或其他代理软件时会出现互相争夺网络代理当然我们
+2. Modify a value to let the front-end engineer see the modified effect
 
-              可以注入某个软件例如Chrome支持不安全的CA和Proxy的注入。
+3. Map multiple static file requests to the local hot update compiled directory
 
-              市场上的抓包改包工具很丰富例如charles\fiddler\wireshark
+Q：Why not support PC global request acquisition
 
-              有偿且有学习成本，我们仅代理了自带的浏览器不存在污染。
+A：The global request must modify your network proxy&trust the CA certificate generated by us
 
-              做抓包工具可以实现但并不符合我们明确且轻量的初衷和方向。
+When using VPN or other proxy software, there will be competition for network proxy. Of course, we
+
+You can inject some software, such as Chrome, to support the injection of insecure CAs and proxies.
+
+There are many tools for packet capture and modification in the market, such as charles fiddler wireshark
+
+There are fees and learning costs. We only proxy our own browser without pollution.
+
+It can be achieved by packet capturing tools, but it does not conform to our clear and lightweight original intention and direction.
