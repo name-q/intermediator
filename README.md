@@ -1,6 +1,6 @@
 # Intermediator
 
-EN/[简体]([./README_CN.md)
+EN/[简体](README_CN.md)
 
 Intermediator is a lightweight open source tool for modifying interface return values on Windows (x64) and Mac systems.
 
@@ -20,7 +20,7 @@ return values in a regular manner.
 
 3. Edit your rules
 
-```Easily edit your rules
+```Easily
      Currently, API, batch regular and path matching methods are 
      supported Enter the changed value/local path in the Changed value
 
@@ -39,8 +39,6 @@ return values in a regular manner.
 ```
 
     4. Click the browser icon to see the effect
-
-
 
 ## Intermediator Workflow
 
@@ -64,8 +62,6 @@ return values in a regular manner.
 
     [Issues · name-q/intermediator · GitHub](https://github.com/name-q/intermediator/issues)
 
-
-
 ## Download link
 
     mac:
@@ -80,11 +76,7 @@ return values in a regular manner.
 
     [Release Intermediator · name-q/intermediator · GitHub](https://github.com/name-q/intermediator/releases/tag/PublicTest)
 
-
-
 ## common problem
-
-
 
 Q：What's the difference with PostMan
 
