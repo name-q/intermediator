@@ -339,7 +339,7 @@ const handleAddRule = (url: string, setActiveKey: Function, rule: ruleBox[], set
   try {
     if (!url) return message.info('URL not entered')
     // 是否为网址
-    const reg = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
+    const reg = /(http|https):\/\/([\w.]+\/?)\S*/;
     if (!reg.test(url)) return message.warning("URL must contain 'http://' or 'https://'");
     // 解析出标准网址
     const standardUrl = (urlx: string): any => {
@@ -506,7 +506,7 @@ const handleJSONEditorChange = (indexes: string, setRule: Function, rule: ruleBo
 const handleIntermediator = (rule: ruleBox[], url: string) => {
   if (!url) return message.info('URL not entered')
   // 是否为网址
-  const reg = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
+  const reg = /(http|https):\/\/([\w.]+\/?)\S*/;
   if (!reg.test(url)) return message.warning("URL must contain 'http://' or 'https://'");
   // 解析出标准网址
   const standardUrl = (urlx: string): any => {
